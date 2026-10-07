@@ -1,0 +1,232 @@
+<!doctype html>
+<html lang="en-AU">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#EC6E2D">
+<meta name="robots" content="noindex">
+<title>Job Check</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{--orange:#EC6E2D;--ink:#1f2328;--muted:#666d75;--line:#e4e6ea;--bg:#f5f6f8;--card:#fff;
+    --green:#1f8a4c;--green-bg:#e7f5ec;--amber:#b25e00;--amber-bg:#fff1e0;--red:#c0392b;--grey-bg:#eef0f3}
+  *{box-sizing:border-box}
+  html,body{margin:0;background:var(--bg);color:var(--ink);font-family:Montserrat,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;font-size:16px;-webkit-text-size-adjust:100%}
+  button,input,select,textarea{font:inherit}
+  .wrap{max-width:640px;margin:0 auto;padding:0 14px 90px}
+  header{position:sticky;top:0;z-index:5;background:var(--orange);color:#fff;padding:12px 16px calc(10px);box-shadow:0 2px 8px rgba(0,0,0,.12)}
+  header .row{max-width:640px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:10px}
+  header h1{font-size:18px;margin:0;font-weight:700}
+  header .who{font-size:13px;opacity:.95;text-align:right}
+  header .who button{background:none;border:0;color:#fff;text-decoration:underline;padding:0;font-size:13px}
+  .bar{max-width:640px;margin:8px auto 0;height:8px;background:rgba(255,255,255,.35);border-radius:6px;overflow:hidden}
+  .bar i{display:block;height:100%;background:#fff;width:0;transition:width .4s}
+  .progress{max-width:640px;margin:5px auto 0;font-size:13px}
+  .screen{max-width:420px;margin:12vh auto 0;padding:24px;background:var(--card);border-radius:16px;box-shadow:0 2px 12px rgba(0,0,0,.08);text-align:center}
+  .screen h2{margin:0 0 6px;font-size:22px}
+  .screen p{color:var(--muted);margin:0 0 18px}
+  .screen input{width:100%;font-size:24px;padding:14px;border:2px solid var(--line);border-radius:12px;text-align:center;letter-spacing:.15em}
+  .screen input.name{letter-spacing:0;font-size:20px}
+  .big{display:block;width:100%;margin-top:14px;padding:16px;font-size:18px;font-weight:700;border:0;border-radius:12px;background:var(--orange);color:#fff}
+  .err{color:var(--red);min-height:22px;margin-top:10px;font-size:14px}
+  .chips{display:flex;gap:8px;overflow-x:auto;padding:14px 0 6px;scrollbar-width:none}
+  .chips::-webkit-scrollbar{display:none}
+  .chip{flex:none;border:2px solid var(--line);background:#fff;border-radius:999px;padding:8px 14px;font-size:14px;font-weight:600;color:var(--ink)}
+  .chip.on{border-color:var(--orange);background:var(--orange);color:#fff}
+  .chip b{font-weight:700;margin-left:4px}
+  .tools{display:flex;gap:8px;margin:6px 0 4px}
+  .tools input,.tools select{flex:1;min-width:0;padding:11px 12px;border:2px solid var(--line);border-radius:10px;background:#fff;font-size:15px}
+  .toggle{display:flex;align-items:center;gap:8px;font-size:14px;color:var(--muted);margin:8px 2px 2px}
+  .toggle input{width:20px;height:20px;accent-color:var(--orange)}
+  .ask{background:#fff7f1;border-left:4px solid var(--orange);padding:10px 12px;border-radius:8px;margin:10px 0 4px;font-size:14px}
+  .card{background:var(--card);border-radius:14px;padding:16px;margin:12px 0;box-shadow:0 1px 4px rgba(0,0,0,.07);border:2px solid transparent;transition:opacity .4s,transform .4s}
+  .card.done{border-color:#bfe3cc}
+  .card.gone{opacity:0;transform:translateX(30px)}
+  .tag{display:inline-block;font-size:12px;font-weight:700;padding:3px 9px;border-radius:999px;background:var(--grey-bg);color:var(--muted)}
+  .tag.urgent{background:#fde8e6;color:var(--red)}
+  .card h3{margin:8px 0 4px;font-size:17px;line-height:1.3}
+  .addr{color:var(--ink);font-weight:600;font-size:15px;text-decoration:none;display:inline-block}
+  .addr:after{content:" ›";color:var(--orange)}
+  .meta{color:var(--muted);font-size:13px;margin-top:4px}
+  .desc{color:#3b4148;font-size:14px;margin:8px 0 0;line-height:1.45;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+  .desc.open{-webkit-line-clamp:unset;display:block}
+  .more{background:none;border:0;color:var(--orange);font-weight:600;font-size:13px;padding:4px 0}
+  .tip{margin-top:8px;font-size:13px;background:var(--grey-bg);padding:8px 10px;border-radius:8px}
+  .btns{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px}
+  .btns button{padding:15px 8px;border-radius:12px;border:2px solid var(--line);background:#fff;font-weight:700;font-size:15px;color:var(--ink);min-height:54px}
+  .btns button.pick{border-color:var(--orange);background:var(--orange);color:#fff}
+  .btns button:active{transform:scale(.98)}
+  .status{margin-top:10px;font-size:14px;color:var(--green);font-weight:600}
+  .noteRow{display:flex;gap:8px;margin-top:8px}
+  .noteRow textarea{flex:1;min-height:46px;padding:10px;border:2px solid var(--line);border-radius:10px;font-size:15px;resize:vertical}
+  .noteRow button{border:0;border-radius:10px;background:var(--ink);color:#fff;font-weight:700;padding:0 14px}
+  .empty{text-align:center;color:var(--muted);padding:40px 10px}
+  .toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:var(--ink);color:#fff;padding:12px 18px;border-radius:999px;font-weight:600;font-size:14px;opacity:0;transition:opacity .3s;pointer-events:none;z-index:9}
+  .toast.show{opacity:1}
+  .hidden{display:none!important}
+</style>
+</head>
+<body>
+
+<div id="pinScreen" class="screen hidden">
+  <h2>Job Check</h2>
+  <p>Enter the team PIN</p>
+  <input id="pin" type="password" inputmode="numeric" autocomplete="off" placeholder="••••••">
+  <button class="big" id="pinBtn">Open</button>
+  <div class="err" id="pinErr"></div>
+</div>
+
+<div id="nameScreen" class="screen hidden">
+  <h2>What's your name?</h2>
+  <p>So we know who updated each job.</p>
+  <input id="nameInput" class="name" type="text" autocomplete="name" placeholder="First name">
+  <button class="big" id="nameBtn">Start</button>
+  <div class="err" id="nameErr"></div>
+</div>
+
+<div id="app" class="hidden">
+  <header>
+    <div class="row">
+      <h1>Job Check</h1>
+      <div class="who">Hi <span id="who"></span> · <button id="changeName">not you?</button></div>
+    </div>
+    <div class="bar"><i id="barFill"></i></div>
+    <div class="progress" id="progress"></div>
+  </header>
+  <div class="wrap">
+    <div class="chips" id="chips"></div>
+    <div class="tools">
+      <input id="search" type="search" placeholder="Search address or job #">
+      <select id="pmFilter"><option value="">All PMs</option></select>
+    </div>
+    <label class="toggle"><input type="checkbox" id="hideDone" checked> Hide jobs already updated</label>
+    <div class="ask" id="ask"></div>
+    <div id="list"></div>
+  </div>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+const SECTIONS = {
+  all:      {label:'All', ask:'Go through each job and tap the answer that fits. Tap the address to open it in Maps.'},
+  urgent:   {label:'Urgent', ask:'Marked urgent by the property manager. What is the status?'},
+  confirm:  {label:'Was it done?', ask:'The booked date has passed. Was the job actually done?'},
+  book:     {label:'Never booked', ask:'This job was never booked in. Was it done anyway, or does it still need booking?'},
+  invoice:  {label:'Needs invoice', ask:'Tapi says this is done but not invoiced. Was it really done?'},
+  quote:    {label:'Quotes owed', ask:'We owe the property manager a quote. Where is it at? The grey box has a suggested price.'},
+  oldquote: {label:'Old quotes', ask:'Our quote has waited over 100 days. Was the work done anyway, or is it no longer needed?'},
+};
+let DATA = null, current = 'all';
+const $ = (id) => document.getElementById(id);
+const store = { get(k){try{return localStorage.getItem(k)}catch(e){return null}}, set(k,v){try{localStorage.setItem(k,v)}catch(e){}} };
+let myName = store.get('jc_name') || '';
+
+function show(id){ ['pinScreen','nameScreen','app'].forEach(s => $(s).classList.toggle('hidden', s!==id)); }
+function toast(msg){ const t=$('toast'); t.textContent=msg; t.classList.add('show'); clearTimeout(t._t); t._t=setTimeout(()=>t.classList.remove('show'),1800); }
+function esc(s){ return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+function ago(at){ if(!at) return ''; const d=new Date(at.replace(' ','T')+'Z'); const m=Math.round((Date.now()-d)/60000);
+  if(m<1) return 'just now'; if(m<60) return m+' min ago'; const h=Math.round(m/60); if(h<24) return h+' hr ago'; return Math.round(h/24)+' days ago'; }
+
+async function api(path, body){
+  const r = await fetch(path, body ? {method:'POST', headers:{'content-type':'application/json'}, body:JSON.stringify(body)} : {});
+  const j = await r.json().catch(()=>({}));
+  if (r.status===401 && path!=='/api/login'){ show('pinScreen'); throw new Error('PIN needed'); }
+  if (!r.ok) throw new Error(j.error || 'Something went wrong');
+  return j;
+}
+
+async function load(){
+  try { DATA = await api('/api/jobs'); }
+  catch(e){ if(e.message!=='PIN needed'){ show('pinScreen'); $('pinErr').textContent=e.message; } return; }
+  if (!myName){ show('nameScreen'); $('nameInput').focus(); return; }
+  $('who').textContent = myName;
+  const pms=[...new Set(DATA.jobs.map(j=>j.pm))].sort();
+  $('pmFilter').innerHTML='<option value="">All PMs</option>'+pms.map(p=>`<option>${esc(p)}</option>`).join('');
+  show('app'); render();
+}
+
+function filtered(){
+  const q=$('search').value.trim().toLowerCase(), pm=$('pmFilter').value, hide=$('hideDone').checked;
+  return DATA.jobs.filter(j => (current==='all'||j.section===current) && (!pm||j.pm===pm) && (!hide||!j.update)
+    && (!q || (j.address+' '+j.id+' '+j.title).toLowerCase().includes(q)));
+}
+
+function render(){
+  const total=DATA.jobs.length, done=DATA.jobs.filter(j=>j.update).length;
+  $('barFill').style.width=(100*done/total)+'%';
+  $('progress').textContent=`${done} of ${total} jobs updated`;
+  $('chips').innerHTML=Object.entries(SECTIONS).map(([k,s])=>{
+    const left=DATA.jobs.filter(j=>(k==='all'||j.section===k)&&!j.update).length;
+    if(k!=='all' && !DATA.jobs.some(j=>j.section===k)) return '';
+    return `<button class="chip ${k===current?'on':''}" data-sec="${k}">${s.label}<b>${left}</b></button>`;
+  }).join('');
+  $('ask').textContent=SECTIONS[current].ask;
+  const jobs=filtered();
+  $('list').innerHTML = jobs.length ? jobs.map(card).join('') :
+    `<div class="empty">${$('hideDone').checked?'All done here – nice work! 🎉<br><br>Untick “Hide jobs already updated” to see them.':'No jobs match.'}</div>`;
+}
+
+function card(j){
+  const opts = j.section==='quote' ? DATA.options.quote : DATA.options.standard;
+  const u=j.update;
+  const maps='https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(j.address);
+  return `<div class="card ${u?'done':''}" id="c-${j.id}">
+    <span class="tag ${j.section==='urgent'?'urgent':''}">${esc(SECTIONS[j.section].label)}</span>
+    <h3>${esc(j.title)}</h3>
+    <a class="addr" href="${maps}" target="_blank" rel="noopener">${esc(j.address)}</a>
+    <div class="meta">${esc(j.id)} · PM ${esc(j.pm)} · ${j.days} days old</div>
+    ${j.desc?`<div class="desc" id="d-${j.id}">${esc(j.desc)}</div>${j.desc.length>140?`<button class="more" data-more="${j.id}">Show more</button>`:''}`:''}
+    ${j.tip?`<div class="tip">Suggested: ${esc(j.tip)}</div>`:''}
+    <div class="btns">${opts.map(o=>`<button data-job="${j.id}" data-o="${esc(o)}" class="${u&&u.outcome===o?'pick':''}">${esc(o)}</button>`).join('')}</div>
+    <div class="status ${u?'':'hidden'}" id="s-${j.id}">${u?`✓ ${esc(u.outcome)} · ${esc(u.name)} · ${ago(u.at)}${u.note?`<br><span style="color:var(--muted);font-weight:500">“${esc(u.note)}”</span>`:''}`:''}</div>
+    <div class="noteRow ${u?'':'hidden'}" id="n-${j.id}">
+      <textarea placeholder="Add a note (optional)" id="t-${j.id}">${esc(u?.note||'')}</textarea>
+      <button data-note="${j.id}">Save</button>
+    </div>
+  </div>`;
+}
+
+async function save(jobId, outcome, note){
+  const j=DATA.jobs.find(x=>x.id===jobId);
+  try {
+    const r=await api('/api/update',{jobId, outcome, note: note ?? (j.update?.note||''), name: myName});
+    j.update=r.update;
+    const el=$('c-'+jobId); if(!el) return;
+    el.classList.add('done');
+    el.querySelectorAll('[data-o]').forEach(b=>b.classList.toggle('pick', b.dataset.o===outcome));
+    const s=$('s-'+jobId); s.classList.remove('hidden');
+    s.innerHTML=`✓ ${esc(outcome)} · ${esc(myName)} · just now${r.update.note?`<br><span style="color:var(--muted);font-weight:500">“${esc(r.update.note)}”</span>`:''}`;
+    $('n-'+jobId).classList.remove('hidden');
+    toast('Saved');
+    const total=DATA.jobs.length, done=DATA.jobs.filter(x=>x.update).length;
+    $('barFill').style.width=(100*done/total)+'%'; $('progress').textContent=`${done} of ${total} jobs updated`;
+  } catch(e){ if(e.message!=='PIN needed') toast(e.message); }
+}
+
+document.addEventListener('click', (e)=>{
+  const t=e.target.closest('button'); if(!t) return;
+  if (t.dataset.sec){ current=t.dataset.sec; render(); window.scrollTo({top:0}); }
+  else if (t.dataset.o){ save(t.dataset.job, t.dataset.o); }
+  else if (t.dataset.note){ const j=DATA.jobs.find(x=>x.id===t.dataset.note);
+    if(!j.update){ toast('Tap an answer first'); return; }
+    save(j.id, j.update.outcome, $('t-'+j.id).value).then(()=>{
+      if($('hideDone').checked){ const c=$('c-'+j.id); c&&c.classList.add('gone'); setTimeout(render,450);} }); }
+  else if (t.dataset.more){ const d=$('d-'+t.dataset.more); d.classList.toggle('open'); t.textContent=d.classList.contains('open')?'Show less':'Show more'; }
+});
+['search','pmFilter','hideDone'].forEach(id=>$(id).addEventListener('input',render));
+
+$('pinBtn').onclick=async()=>{
+  $('pinErr').textContent='';
+  try{ await api('/api/login',{pin:$('pin').value}); load(); } catch(e){ $('pinErr').textContent=e.message; }
+};
+$('pin').addEventListener('keydown',e=>{ if(e.key==='Enter') $('pinBtn').click(); });
+$('nameBtn').onclick=()=>{ const n=$('nameInput').value.trim(); if(!n){$('nameErr').textContent='Please type your name';return;}
+  myName=n; store.set('jc_name',n); load(); };
+$('nameInput').addEventListener('keydown',e=>{ if(e.key==='Enter') $('nameBtn').click(); });
+$('changeName').onclick=()=>{ myName=''; store.set('jc_name',''); $('nameInput').value=''; show('nameScreen'); };
+
+load();
+</script>
+</body>
+</html>

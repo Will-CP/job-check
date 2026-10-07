@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en-AU">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Job Check – Admin</title>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{--orange:#EC6E2D;--ink:#1f2328;--muted:#666d75;--line:#e4e6ea;--bg:#f5f6f8}
+  *{box-sizing:border-box} body{margin:0;background:var(--bg);color:var(--ink);font-family:Montserrat,system-ui,sans-serif}
+  header{background:var(--orange);color:#fff;padding:14px 18px} header h1{margin:0;font-size:19px}
+  .wrap{max-width:1000px;margin:0 auto;padding:16px}
+  .box{background:#fff;border-radius:12px;padding:16px;margin-bottom:14px;box-shadow:0 1px 4px rgba(0,0,0,.06)}
+  .pin{max-width:360px;margin:12vh auto;text-align:center}
+  input[type=password]{width:100%;font-size:22px;padding:12px;border:2px solid var(--line);border-radius:10px;text-align:center}
+  .btn{display:inline-block;padding:12px 18px;border:0;border-radius:10px;background:var(--orange);color:#fff;font-weight:700;text-decoration:none;cursor:pointer;font-size:15px}
+  .err{color:#c0392b;margin-top:10px;min-height:20px}
+  table{width:100%;border-collapse:collapse;font-size:14px} th,td{text-align:left;padding:8px 6px;border-bottom:1px solid var(--line);vertical-align:top}
+  th{font-size:12px;text-transform:uppercase;color:var(--muted)}
+  .stats{display:flex;flex-wrap:wrap;gap:10px} .stat{background:var(--bg);border-radius:10px;padding:10px 14px;min-width:120px}
+  .stat b{display:block;font-size:24px}
+  .filters{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:10px}
+  select{padding:8px;border:1px solid var(--line);border-radius:8px}
+  input[type=checkbox]{width:20px;height:20px;accent-color:var(--orange)}
+  a{color:var(--orange)} .hidden{display:none}
+  @media (max-width:700px){ .hide-sm{display:none} }
+</style>
+</head>
+<body>
+<header><h1>Job Check – Admin</h1></header>
+<div class="wrap">
+  <div id="pinBox" class="box pin hidden">
+    <h2>Admin PIN</h2>
+    <input id="pin" type="password" inputmode="numeric" placeholder="••••••">
+    <p><button class="btn" id="go">Open</button></p>
+    <div class="err" id="err"></div>
+  </div>
+  <div id="main" class="hidden">
+    <div class="box">
+      <div class="stats" id="stats"></div>
+      <p style="margin:14px 0 0"><a class="btn" href="/api/admin/export.csv">Download all as spreadsheet (CSV)</a></p>
+    </div>
+    <div class="box">
+      <div class="filters">
+        <strong>Updates to put into Tapi</strong>
+        <select id="show"><option value="todo">Not yet in Tapi</option><option value="all">All updated jobs</option></select>
+        <select id="outcome"><option value="">Any answer</option></select>
+      </div>
+      <p style="margin:0 0 10px;color:var(--muted);font-size:14px">Open the job in Tapi, make the change (e.g. click “Yes, all done”, raise the invoice, cancel), then tick <b>Done in Tapi</b>.</p>
+      <table>
+        <thead><tr><th>Done in Tapi</th><th>Job</th><th>Answer</th><th class="hide-sm">Note</th><th class="hide-sm">By</th><th class="hide-sm">Address</th></tr></thead>
+        <tbody id="rows"></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+<script>
+const $=id=>document.getElementById(id); let DATA=null;
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+async function api(p,b){const r=await fetch(p,b?{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify(b)}:{});
+  const j=await r.json().catch(()=>({})); if(r.status===401&&p!=='/api/admin/login'){show(false);throw new Error('PIN');} if(!r.ok) throw new Error(j.error||'Error'); return j;}
+function show(m){$('pinBox').classList.toggle('hidden',m);$('main').classList.toggle('hidden',!m);}
+async function load(){ try{DATA=await api('/api/admin/jobs');}catch(e){if(e.message!=='PIN'){show(false);$('err').textContent=e.message;}return;} show(true);
+  const outs=[...new Set([...DATA.options.standard,...DATA.options.quote])]; $('outcome').innerHTML='<option value="">Any answer</option>'+outs.map(o=>`<option>${esc(o)}</option>`).join(''); render(); }
+function render(){
+  const up=DATA.jobs.filter(j=>j.update), todo=up.filter(j=>!j.update.in_tapi);
+  const count=o=>up.filter(j=>j.update.outcome===o).length;
+  $('stats').innerHTML=[['Jobs',DATA.jobs.length],['Updated',up.length],['Still to check',DATA.jobs.length-up.length],['To put in Tapi',todo.length],
+    ['Done',count('Done')],['Not done – rebook',count('Not done – rebook')],['Not needed',count('Not needed')],['Not sure',count('Not sure')],['Quote sent',count('Quote sent')]]
+    .map(([k,v])=>`<div class="stat"><b>${v}</b>${k}</div>`).join('');
+  const show=$('show').value, o=$('outcome').value;
+  const list=up.filter(j=>(show==='all'||!j.update.in_tapi)&&(!o||j.update.outcome===o));
+  $('rows').innerHTML=list.map(j=>`<tr><td><input type="checkbox" data-id="${j.id}" ${j.update.in_tapi?'checked':''}></td>
+    <td><a href="${esc(j.url)}" target="_blank" rel="noopener">${esc(j.id)}</a><br>${esc(j.title)}</td><td><b>${esc(j.update.outcome)}</b></td>
+    <td class="hide-sm">${esc(j.update.note)}</td><td class="hide-sm">${esc(j.update.name)}</td><td class="hide-sm">${esc(j.address)}</td></tr>`).join('')
+    || '<tr><td colspan="6" style="color:var(--muted)">Nothing here yet.</td></tr>';
+}
+document.addEventListener('change',async e=>{ if(e.target.dataset.id){ const j=DATA.jobs.find(x=>x.id===e.target.dataset.id);
+  try{await api('/api/admin/in-tapi',{jobId:j.id,inTapi:e.target.checked}); j.update.in_tapi=e.target.checked?1:0; setTimeout(render,300);}catch(err){alert(err.message);} } });
+$('show').onchange=render; $('outcome').onchange=render;
+$('go').onclick=async()=>{ $('err').textContent=''; try{await api('/api/admin/login',{pin:$('pin').value}); load();}catch(e){$('err').textContent=e.message;} };
+$('pin').addEventListener('keydown',e=>{if(e.key==='Enter')$('go').click();});
+load();
+</script>
+</body>
+</html>
