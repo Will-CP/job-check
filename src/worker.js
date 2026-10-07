@@ -1,4 +1,4 @@
-import { JOBS, AS_OF } from './jobs.js';
+import { JOBS as ALL_JOBS, AS_OF } from './jobs.js'; const JOBS = ALL_JOBS.filter((j) => j.section !== 'quote'); // quotes are handled by the office, not the team
 
 const COOKIE = 'jc_auth';
 const ADMIN_COOKIE = 'jc_admin';
