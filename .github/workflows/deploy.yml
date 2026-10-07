@@ -1,0 +1,43 @@
+name: Deploy to Cloudflare
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    env:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm ci
+
+      - name: Create the database (first run only) and link it
+        run: |
+          ID=$(npx wrangler d1 list --json | node -e 'const l=JSON.parse(require("fs").readFileSync(0,"utf8"));const d=l.find(x=>x.name==="job-check");process.stdout.write(d?d.uuid:"")')
+          if [ -z "$ID" ]; then
+            npx wrangler d1 create job-check
+            ID=$(npx wrangler d1 list --json | node -e 'const l=JSON.parse(require("fs").readFileSync(0,"utf8"));process.stdout.write(l.find(x=>x.name==="job-check").uuid)')
+          fi
+          sed -i "s/00000000-0000-0000-0000-000000000000/$ID/" wrangler.jsonc
+          echo "Database: $ID"
+
+      - name: Update database tables
+        run: npx wrangler d1 migrations apply job-check --remote
+
+      - name: Deploy site
+        run: npx wrangler deploy
+
+      - name: Set PINs
+        env:
+          APP_PIN: ${{ secrets.APP_PIN }}
+          ADMIN_PIN: ${{ secrets.ADMIN_PIN }}
+        run: |
+          if [ -z "$APP_PIN" ] || [ -z "$ADMIN_PIN" ]; then echo "::error::Add APP_PIN and ADMIN_PIN repository secrets"; exit 1; fi
+          echo "$APP_PIN" | npx wrangler secret put APP_PIN
+          echo "$ADMIN_PIN" | npx wrangler secret put ADMIN_PIN
