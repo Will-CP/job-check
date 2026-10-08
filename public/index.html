@@ -177,7 +177,7 @@ function card(j){
     <a class="addr" href="${maps}" target="_blank" rel="noopener">${esc(j.address)}</a>
     <div class="meta">${esc(j.id)} · PM ${esc(j.pm)} · ${j.days} days old</div>
     ${j.desc?`<div class="desc" id="d-${j.id}">${esc(j.desc)}</div>${j.desc.length>140?`<button class="more" data-more="${j.id}">Show more</button>`:''}`:''}
-    ${j.tip?`<div class="tip">Suggested: ${esc(j.tip)}</div>`:''}
+    ${j.tip?`<div class="tip">${esc(j.tip)}</div>`:''}
     <div class="btns">${opts.map(o=>`<button data-job="${j.id}" data-o="${esc(o)}" class="${u&&u.outcome===o?'pick':''}">${esc(o)}</button>`).join('')}</div>
     <div class="status ${u?'':'hidden'}" id="s-${j.id}">${u?`✓ ${esc(u.outcome)} · ${esc(u.name)} · ${ago(u.at)}${u.note?`<br><span style="color:var(--muted);font-weight:500">“${esc(u.note)}”</span>`:''}`:''}</div>
     <div class="noteRow ${u?'':'hidden'}" id="n-${j.id}">
