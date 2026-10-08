@@ -1,4 +1,26 @@
-import { JOBS as ALL_JOBS, AS_OF } from './jobs.js'; const JOBS = ALL_JOBS.filter((j) => j.section !== 'quote'); // quotes are handled by the office, not the team
+import { JOBS as BASE_JOBS, AS_OF as BASE_AS_OF } from './jobs.js';
+import { UPDATE } from './updates.js';
+
+// Build the live job list: base list + updates, quotes hidden (the office does quotes, not the team).
+// VIC and QLD Tapi share job numbers, so a repeated number on a QLD job gets a -QLD suffix.
+const AS_OF = UPDATE.asOf || BASE_AS_OF;
+const JOBS = (() => {
+  const seen = new Set();
+  const shift = Math.round((Date.parse(AS_OF) - Date.parse(BASE_AS_OF)) / 86400000);
+  const list = [];
+  for (const j0 of BASE_JOBS) {
+    let id = j0.id;
+    if (seen.has(id) && j0.state === 'QLD') id += '-QLD';
+    seen.add(id);
+    if (id in UPDATE.remove) continue;
+    const j = { ...j0, id, days: j0.days + shift, ...(UPDATE.patch[id] || {}) };
+    if (UPDATE.notes[id]) j.tip = UPDATE.notes[id];
+    list.push(j);
+  }
+  for (const a of UPDATE.add) list.push({ tip: UPDATE.notes[a.id] || '', ...a });
+  const order = ['urgent', 'confirm', 'book', 'invoice', 'quote', 'oldquote'];
+  return list.filter((j) => j.section !== 'quote').sort((a, b) => order.indexOf(a.section) - order.indexOf(b.section) || b.days - a.days);
+})();
 
 const COOKIE = 'jc_auth';
 const ADMIN_COOKIE = 'jc_admin';
