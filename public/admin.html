@@ -46,10 +46,11 @@
         <strong>Updates to put into Tapi</strong>
         <select id="show"><option value="todo">Not yet in Tapi</option><option value="all">All updated jobs</option></select>
         <select id="outcome"><option value="">Any answer</option></select>
+        <select id="sort"><option value="new">Newest first</option><option value="old">Oldest first</option></select>
       </div>
       <p style="margin:0 0 10px;color:var(--muted);font-size:14px">Open the job in Tapi, make the change (e.g. click “Yes, all done”, raise the invoice, cancel), then tick <b>Done in Tapi</b>.</p>
       <table>
-        <thead><tr><th>Done in Tapi</th><th>Job</th><th>Answer</th><th class="hide-sm">Note</th><th class="hide-sm">By</th><th class="hide-sm">Address</th></tr></thead>
+        <thead><tr><th>Done in Tapi</th><th>Job</th><th>Answer</th><th class="hide-sm">When</th><th class="hide-sm">Note</th><th class="hide-sm">By</th><th class="hide-sm">Address</th></tr></thead>
         <tbody id="rows"></tbody>
       </table>
     </div>
@@ -70,15 +71,16 @@ function render(){
     ['Done',count('Done')],['Not done – rebook',count('Not done – rebook')],['Not needed',count('Not needed')],['Not sure',count('Not sure')],['Quote sent',count('Quote sent')]]
     .map(([k,v])=>`<div class="stat"><b>${v}</b>${k}</div>`).join('');
   const show=$('show').value, o=$('outcome').value;
-  const list=up.filter(j=>(show==='all'||!j.update.in_tapi)&&(!o||j.update.outcome===o));
+  const list=up.filter(j=>(show==='all'||!j.update.in_tapi)&&(!o||j.update.outcome===o))
+    .sort((x,y)=>{const d=String(x.update.at).localeCompare(String(y.update.at)); return $('sort').value==='old'?d:-d;});
   $('rows').innerHTML=list.map(j=>`<tr><td><input type="checkbox" data-id="${j.id}" ${j.update.in_tapi?'checked':''}></td>
-    <td><a href="${esc(j.url)}" target="_blank" rel="noopener">${esc(j.id)}</a><br>${esc(j.title)}</td><td><b>${esc(j.update.outcome)}</b></td>
+    <td><a href="${esc(j.url)}" target="_blank" rel="noopener">${esc(j.id)}</a><br>${esc(j.title)}</td><td><b>${esc(j.update.outcome)}</b></td><td class="hide-sm">${esc(new Date(j.update.at.replace(' ','T')+'Z').toLocaleString('en-AU',{day:'numeric',month:'short',hour:'numeric',minute:'2-digit'}))}</td>
     <td class="hide-sm">${esc(j.update.note)}</td><td class="hide-sm">${esc(j.update.name)}</td><td class="hide-sm">${esc(j.address)}</td></tr>`).join('')
-    || '<tr><td colspan="6" style="color:var(--muted)">Nothing here yet.</td></tr>';
+    || '<tr><td colspan="7" style="color:var(--muted)">Nothing here yet.</td></tr>';
 }
 document.addEventListener('change',async e=>{ if(e.target.dataset.id){ const j=DATA.jobs.find(x=>x.id===e.target.dataset.id);
   try{await api('/api/admin/in-tapi',{jobId:j.id,inTapi:e.target.checked}); j.update.in_tapi=e.target.checked?1:0; setTimeout(render,300);}catch(err){alert(err.message);} } });
-$('show').onchange=render; $('outcome').onchange=render;
+$('show').onchange=render; $('outcome').onchange=render; $('sort').onchange=render;
 $('go').onclick=async()=>{ $('err').textContent=''; try{await api('/api/admin/login',{pin:$('pin').value}); load();}catch(e){$('err').textContent=e.message;} };
 $('pin').addEventListener('keydown',e=>{if(e.key==='Enter')$('go').click();});
 load();

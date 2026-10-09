@@ -100,6 +100,9 @@
       <input id="search" type="search" placeholder="Search address or job #">
       <select id="pmFilter"><option value="">All PMs</option></select>
     </div>
+    <div class="tools">
+      <select id="sort"><option value="new">Newest first</option><option value="old">Oldest first</option></select>
+    </div>
     <label class="toggle"><input type="checkbox" id="hideDone" checked> Hide jobs already updated</label>
     <div class="ask" id="ask"></div>
     <div id="list"></div>
@@ -149,7 +152,8 @@ async function load(){
 function filtered(){
   const q=$('search').value.trim().toLowerCase(), pm=$('pmFilter').value, hide=$('hideDone').checked;
   return DATA.jobs.filter(j => (current==='all'||j.section===current) && (!pm||j.pm===pm) && (!hide||!j.update)
-    && (!q || (j.address+' '+j.id+' '+j.title).toLowerCase().includes(q)));
+    && (!q || (j.address+' '+j.id+' '+j.title).toLowerCase().includes(q)))
+    .sort((x,y)=> $('sort').value==='old' ? y.days-x.days : x.days-y.days);
 }
 
 function render(){
@@ -214,7 +218,9 @@ document.addEventListener('click', (e)=>{
       if($('hideDone').checked){ const c=$('c-'+j.id); c&&c.classList.add('gone'); setTimeout(render,450);} }); }
   else if (t.dataset.more){ const d=$('d-'+t.dataset.more); d.classList.toggle('open'); t.textContent=d.classList.contains('open')?'Show less':'Show more'; }
 });
-['search','pmFilter','hideDone'].forEach(id=>$(id).addEventListener('input',render));
+$('sort').value = store.get('jc_sort') || 'new';
+$('sort').addEventListener('change',()=>store.set('jc_sort',$('sort').value));
+['search','pmFilter','hideDone','sort'].forEach(id=>$(id).addEventListener('input',render));
 
 $('pinBtn').onclick=async()=>{
   $('pinErr').textContent='';
