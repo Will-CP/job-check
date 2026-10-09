@@ -1,7 +1,7 @@
-// Changes since jobs.js was built: refreshed Tapi export (8 Oct 2026) and Xero invoice matching.
+// Changes since jobs.js was built: refreshed from Tapi (9 Oct 2026) and Xero invoice matching.
 // When jobs.js is rebuilt from a new Tapi CSV, reset this to { asOf: null, remove: {}, add: [], patch: {}, notes: {} }.
 export const UPDATE = {
- "asOf": "2026-10-08",
+ "asOf": "2026-10-09",
  "remove": {
   "TAPI-02225": "",
   "TAPI-02770": "Invoiced and paid in Xero (INV-0139, 31 Aug)",
@@ -22,7 +22,18 @@ export const UPDATE = {
   "TAPI-02509": "",
   "TAPI-02501": "",
   "TAPI-02511": "",
-  "TAPI-02379": ""
+  "TAPI-02379": "",
+  "TAPI-02766": "Closed in Tapi",
+  "TAPI-02619": "Closed in Tapi",
+  "TAPI-02491": "Closed in Tapi",
+  "TAPI-02475": "Closed in Tapi",
+  "TAPI-02763": "Invoiced 9 Oct (INV-0179)",
+  "TAPI-03079": "Invoiced 9 Oct (INV-0177)",
+  "TAPI-03080": "Invoiced 9 Oct (INV-0178)",
+  "TAPI-03077": "Invoiced 9 Oct (INV-0175)",
+  "TAPI-03074": "Invoiced 9 Oct (INV-0176)",
+  "TAPI-03076": "Invoiced 9 Oct (INV-0174)",
+  "TAPI-03042": "Invoiced 9 Oct (INV-0173)"
  },
  "add": [
   {
@@ -32,52 +43,37 @@ export const UPDATE = {
    "address": "28 Vivid Street Winter Valley VIC",
    "state": "VIC",
    "pm": "Darren Passande",
-   "days": 0,
+   "days": 1,
    "tapiStatus": "Scheduling job",
    "desc": "Can you please attend and mow the nature strip",
    "url": "https://tapi.app/issue/02795974-4feb-4897-b14d-9b698fa650af"
   }
  ],
- "patch": {
-  "TAPI-03042": {
-   "section": "invoice",
-   "tapiStatus": "Awaiting invoice",
-   "days": 0
-  }
- },
+ "patch": {},
  "notes": {
   "TAPI-02109": "Xero: mowing last invoiced at this address 10 Aug (INV-0123, paid).",
-  "TAPI-02108": "Xero: mowing last invoiced at this address 10 Aug (INV-0120, unpaid).",
-  "TAPI-01940": "Xero: mowing last invoiced at this address 10 Aug (INV-0120, unpaid).",
-  "TAPI-02114": "Xero: mowing last invoiced at this address 31 Aug (INV-0138, paid).",
+  "TAPI-02108": "Xero: mowing last invoiced at this address 9 Oct (INV-0176, unpaid).",
+  "TAPI-01940": "Xero: mowing last invoiced at this address 9 Oct (INV-0176, unpaid).",
+  "TAPI-02114": "Xero: mowing last invoiced at this address 9 Oct (INV-0177, unpaid).",
   "TAPI-02482": "Xero: mowing last invoiced at this address 20 Apr (INV-0049, paid).",
-  "TAPI-02494": "Xero: mowing last invoiced at this address 31 Aug (INV-0138, paid).",
-  "TAPI-02617": "Xero: mowing last invoiced at this address 31 Aug (INV-0138, paid).",
+  "TAPI-02494": "Xero: mowing last invoiced at this address 9 Oct (INV-0177, unpaid).",
+  "TAPI-02617": "Xero: mowing last invoiced at this address 9 Oct (INV-0177, unpaid).",
   "TAPI-02661": "Xero: lawn last invoiced at this address 10 Aug (INV-0122, paid).",
   "TAPI-02508": "Xero: mowing last invoiced at this address 13 Jul (INV-0102, paid).",
-  "TAPI-02932": "Xero: mowing last invoiced at this address 31 Aug (INV-0138, paid).",
+  "TAPI-02932": "Xero: mowing last invoiced at this address 9 Oct (INV-0177, unpaid).",
   "TAPI-02768": "Xero: mowing last invoiced at this address 3 Aug (INV-0118, paid).",
-  "TAPI-02766": "Xero: mowing last invoiced at this address 7 Sep (INV-0142, paid).",
   "TAPI-02933": "Xero: mowing last invoiced at this address 3 Aug (INV-0118, paid).",
-  "TAPI-02931": "Xero: mowing last invoiced at this address 31 Aug (INV-0139, paid).",
+  "TAPI-02931": "Xero: mowing last invoiced at this address 9 Oct (INV-0178, unpaid).",
   "TAPI-02953": "Xero: lawn last invoiced at this address 13 Jul (INV-0107, paid).",
   "TAPI-03078": "Xero: mowing last invoiced at this address 3 Aug (INV-0118, paid).",
   "TAPI-03093": "Xero: lawn last invoiced at this address 11 May (INV-0062, paid).",
-  "TAPI-01866": "Xero: mowing last invoiced at this address 31 Aug (INV-0138, paid).",
-  "TAPI-02115": "Xero: mowing last invoiced at this address 31 Aug (INV-0139, paid).",
+  "TAPI-01866": "Xero: mowing last invoiced at this address 9 Oct (INV-0177, unpaid).",
+  "TAPI-02115": "Xero: mowing last invoiced at this address 9 Oct (INV-0178, unpaid).",
   "TAPI-01911": "Xero: lawn last invoiced at this address 11 May (INV-0062, paid).",
-  "TAPI-01933": "Xero: mowing last invoiced at this address 31 Aug (INV-0139, paid).",
+  "TAPI-01933": "Xero: mowing last invoiced at this address 9 Oct (INV-0178, unpaid).",
   "TAPI-02299": "Xero: mowing last invoiced at this address 10 Aug (INV-0123, paid).",
-  "TAPI-01934": "Xero: mowing last invoiced at this address 31 Aug (INV-0138, paid).",
-  "TAPI-02937": "Xero: mowing last invoiced at this address 10 Aug (INV-0120, unpaid).",
-  "TAPI-02926": "Xero: garden last invoiced at this address 4 May (INV-0054, unpaid).",
-  "TAPI-03079": "Xero: mowing last invoiced at this address 31 Aug (INV-0138, paid).",
-  "TAPI-03080": "Xero: mowing last invoiced at this address 31 Aug (INV-0139, paid).",
-  "TAPI-02619": "Xero: routine clean last invoiced at this address 7 Sep (INV-0143, paid).",
-  "TAPI-03077": "Xero: routine clean last invoiced at this address 7 Sep (INV-0143, paid).",
-  "TAPI-03074": "Xero: mowing last invoiced at this address 10 Aug (INV-0120, unpaid).",
-  "TAPI-03076": "Xero: mowing last invoiced at this address 7 Sep (INV-0142, paid).",
-  "TAPI-02491": "Xero: mowing last invoiced at this address 7 Sep (INV-0142, paid).",
-  "TAPI-03042": "Xero: lawn last invoiced at this address 7 Sep (INV-0144, unpaid)."
+  "TAPI-01934": "Xero: mowing last invoiced at this address 9 Oct (INV-0177, unpaid).",
+  "TAPI-02937": "Xero: mowing last invoiced at this address 9 Oct (INV-0176, unpaid).",
+  "TAPI-02926": "Xero: garden last invoiced at this address 4 May (INV-0054, unpaid)."
  }
 };
