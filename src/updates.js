@@ -1,7 +1,7 @@
-// Changes since jobs.js was built: refreshed from Tapi (9 Oct 2026) and Xero invoice matching.
+// Changes since jobs.js was built: refreshed from Tapi (11 Oct 2026), Xero invoice matching and a double-up check.
 // When jobs.js is rebuilt from a new Tapi CSV, reset this to { asOf: null, remove: {}, add: [], patch: {}, notes: {} }.
 export const UPDATE = {
- "asOf": "2026-10-09",
+ "asOf": "2026-10-11",
  "remove": {
   "TAPI-02225": "",
   "TAPI-02770": "Invoiced and paid in Xero (INV-0139, 31 Aug)",
@@ -33,27 +33,90 @@ export const UPDATE = {
   "TAPI-03077": "Invoiced 9 Oct (INV-0175)",
   "TAPI-03074": "Invoiced 9 Oct (INV-0176)",
   "TAPI-03076": "Invoiced 9 Oct (INV-0174)",
-  "TAPI-03042": "Invoiced 9 Oct (INV-0173)"
+  "TAPI-03042": "Invoiced 9 Oct (INV-0173)",
+  "TAPI-02011": "Invoiced 12 Oct (INV-0183)",
+  "TAPI-03072": "Invoiced 12 Oct (INV-0180)",
+  "TAPI-02961": "Invoiced 12 Oct (INV-0187)",
+  "TAPI-03014": "Invoiced 12 Oct (INV-0184)",
+  "TAPI-03011": "Invoiced 12 Oct (INV-0188)",
+  "TAPI-02108-QLD": "Booked in Tapi",
+  "TAPI-01221": "Booked in Tapi",
+  "TAPI-03130": "Invoiced 12 Oct (INV-0185)",
+  "TAPI-03095": "Invoiced 12 Oct (INV-0181)",
+  "TAPI-03146": "Invoiced 12 Oct (INV-0182)",
+  "TAPI-02937": "Invoiced 12 Oct (INV-0186)"
  },
  "add": [
   {
-   "id": "TAPI-03146",
+   "id": "TAPI-03152",
    "section": "book",
-   "title": "Mowing of the nature strip",
-   "address": "28 Vivid Street Winter Valley VIC",
+   "title": "Lawns",
+   "address": "Room 1, 6 Petunia Cres Armstrong Creek VIC",
    "state": "VIC",
-   "pm": "Darren Passande",
-   "days": 1,
+   "pm": "Raina Williams",
+   "days": 0,
    "tapiStatus": "Scheduling job",
-   "desc": "Can you please attend and mow the nature strip",
-   "url": "https://tapi.app/issue/02795974-4feb-4897-b14d-9b698fa650af"
+   "desc": "Please provide a quote for the one off job. Front and back yard + nature strip. Mowing, whipper snip, tidy, green waste removal.",
+   "url": "https://tapi.app/issue/bfe4e6af-bdda-43c2-9a36-92392ea3640d"
+  },
+  {
+   "id": "TAPI-03160",
+   "section": "book",
+   "title": "Routine Co-living Cleaning and Gardening (Every 3 weeks)",
+   "address": "1/4 Oski Street Wyndham Vale VIC",
+   "state": "VIC",
+   "pm": "Raina Williams",
+   "days": 0,
+   "tapiStatus": "Scheduling job",
+   "desc": "Routine cleaning of common spaces 1. Vacuum 2. Mop 3. Clean Kitchen 4. General Tidy 5. Bin check 6. Report any issues to the property manager Routine garden maintenance - Mow front and back lawns (incl. nature strip) - Whipper-snip all areas for neatness - Treat weeds with herbicide - Blow and remove green waste as required. - Leave property in condition that remains compliant with council regulat",
+   "url": "https://tapi.app/issue/e0eacc91-31dc-4c94-966c-e415374fea41"
+  },
+  {
+   "id": "TAPI-03159",
+   "section": "book",
+   "title": "Routine Co-living Cleaning and Gardening (Every 3 weeks)",
+   "address": "1/30 Oski Street Wyndham Vale VIC",
+   "state": "VIC",
+   "pm": "Raina Williams",
+   "days": 0,
+   "tapiStatus": "Scheduling job",
+   "desc": "Routine cleaning of common spaces 1. Vacuum 2. Mop 3. Clean Kitchen 4. General Tidy 5. Bin check 6. Report any issues to the property manager Routine garden maintenance - Mow front and back lawns (incl. nature strip) - Whipper-snip all areas for neatness - Treat weeds with herbicide - Blow and remove green waste as required. - Leave property in condition that remains compliant with council regulat",
+   "url": "https://tapi.app/issue/df07466a-6893-4dcb-af41-32a43714258a"
+  },
+  {
+   "id": "TAPI-03158",
+   "section": "book",
+   "title": "Routine Co-living Cleaning and Gardening (Every 3 weeks)",
+   "address": "Room 3, 11 Ardsley Street Manor Lakes VIC",
+   "state": "VIC",
+   "pm": "Raina Williams",
+   "days": 0,
+   "tapiStatus": "Scheduling job",
+   "desc": "Routine cleaning of common spaces 1. Vacuum 2. Mop 3. Clean Kitchen 4. General Tidy 5. Bin check 6. Report any issues to the property manager Routine garden maintenance - Mow front and back lawns (incl. nature strip) - Whipper-snip all areas for neatness - Treat weeds with herbicide - Blow and remove green waste as required. - Leave property in condition that remains compliant with council regulat",
+   "url": "https://tapi.app/issue/b85a937e-5b60-4c00-89c2-158d1d506598"
+  },
+  {
+   "id": "TAPI-03157",
+   "section": "book",
+   "title": "Routine Co-living Cleaning and Gardening (Every 3 weeks)",
+   "address": "15 Sue Street Wyndham Vale VIC",
+   "state": "VIC",
+   "pm": "Raina Williams",
+   "days": 0,
+   "tapiStatus": "Scheduling job",
+   "desc": "Routine cleaning of common spaces 1. Vacuum 2. Mop 3. Clean Kitchen 4. General Tidy 5. Bin check 6. Report any issues to the property manager Routine garden maintenance - Mow front and back lawns (incl. nature strip) - Whipper-snip all areas for neatness - Treat weeds with herbicide - Blow and remove green waste as required. - Leave property in condition that remains compliant with council regulat",
+   "url": "https://tapi.app/issue/56829602-04f9-4f8c-be82-5981e00b9d0f"
   }
  ],
- "patch": {},
+ "patch": {
+  "TAPI-03012": {
+   "days": 0
+  }
+ },
  "notes": {
   "TAPI-02109": "Xero: mowing last invoiced at this address 10 Aug (INV-0123, paid).",
-  "TAPI-02108": "Xero: mowing last invoiced at this address 9 Oct (INV-0176, unpaid).",
-  "TAPI-01940": "Xero: mowing last invoiced at this address 9 Oct (INV-0176, unpaid).",
+  "TAPI-02108": "Possible double-up: TAPI-01940 is the same mow at this address, posted the same day. One visit or two? Xero: mowing last invoiced at this address 12 Oct (INV-0186, unpaid) and 9 Oct (INV-0176).",
+  "TAPI-01940": "Possible double-up: TAPI-02108 is the same mow at this address, posted the same day. One visit or two? Xero: mowing last invoiced at this address 12 Oct (INV-0186, unpaid) and 9 Oct (INV-0176).",
   "TAPI-02114": "Xero: mowing last invoiced at this address 9 Oct (INV-0177, unpaid).",
   "TAPI-02482": "Xero: mowing last invoiced at this address 20 Apr (INV-0049, paid).",
   "TAPI-02494": "Xero: mowing last invoiced at this address 9 Oct (INV-0177, unpaid).",
@@ -63,17 +126,25 @@ export const UPDATE = {
   "TAPI-02932": "Xero: mowing last invoiced at this address 9 Oct (INV-0177, unpaid).",
   "TAPI-02768": "Xero: mowing last invoiced at this address 3 Aug (INV-0118, paid).",
   "TAPI-02933": "Xero: mowing last invoiced at this address 3 Aug (INV-0118, paid).",
-  "TAPI-02931": "Xero: mowing last invoiced at this address 9 Oct (INV-0178, unpaid).",
-  "TAPI-02953": "Xero: lawn last invoiced at this address 13 Jul (INV-0107, paid).",
+  "TAPI-02931": "Check before invoicing: Flow Way has 4 open mow jobs but only 2 mows invoiced since May (31 Aug, 9 Oct). Xero: mowing last invoiced at this address 9 Oct (INV-0178, unpaid).",
+  "TAPI-02953": "Possible double-up: a new lawns and cleaning job (TAPI-03153) was posted for this address on 11 Oct. Is this one still needed? Xero: lawn last invoiced at this address 13 Jul (INV-0107, paid).",
   "TAPI-03078": "Xero: mowing last invoiced at this address 3 Aug (INV-0118, paid).",
-  "TAPI-03093": "Xero: lawn last invoiced at this address 11 May (INV-0062, paid).",
+  "TAPI-03093": "Possible double-up: TAPI-01911 (lawn, May, not invoiced) and TAPI-03022 (lawn quote, Sep) are also open for this address. Xero: lawn last invoiced at this address 11 May (INV-0062, paid).",
   "TAPI-01866": "Xero: mowing last invoiced at this address 9 Oct (INV-0177, unpaid).",
-  "TAPI-02115": "Xero: mowing last invoiced at this address 9 Oct (INV-0178, unpaid).",
-  "TAPI-01911": "Xero: lawn last invoiced at this address 11 May (INV-0062, paid).",
-  "TAPI-01933": "Xero: mowing last invoiced at this address 9 Oct (INV-0178, unpaid).",
+  "TAPI-02115": "Check before invoicing: Flow Way has 4 open mow jobs but only 2 mows invoiced since May (31 Aug, 9 Oct). Xero: mowing last invoiced at this address 9 Oct (INV-0178, unpaid).",
+  "TAPI-01911": "Possible double-up: TAPI-03093 (garden, Oct) and TAPI-03022 (lawn quote, Sep) are also open for this address. Xero: lawn last invoiced at this address 11 May (INV-0062, paid).",
+  "TAPI-01933": "Check before invoicing: Flow Way has 4 open mow jobs but only 2 mows invoiced since May (31 Aug, 9 Oct). Xero: mowing last invoiced at this address 9 Oct (INV-0178, unpaid).",
   "TAPI-02299": "Xero: mowing last invoiced at this address 10 Aug (INV-0123, paid).",
   "TAPI-01934": "Xero: mowing last invoiced at this address 9 Oct (INV-0177, unpaid).",
-  "TAPI-02937": "Xero: mowing last invoiced at this address 9 Oct (INV-0176, unpaid).",
-  "TAPI-02926": "Xero: garden last invoiced at this address 4 May (INV-0054, unpaid)."
+  "TAPI-02926": "Xero: garden last invoiced at this address 4 May (INV-0054, unpaid).",
+  "TAPI-01417": "Possible double-up: TAPI-01653 is another lawn job at this address posted 2 weeks later. Same job?",
+  "TAPI-01653": "Possible double-up: TAPI-01417 is another lawn job at this address posted 2 weeks earlier. Same job?",
+  "TAPI-02528": "Possible double-up: TAPI-02422 (clean and lawns) was posted for this address the same day. Same job?",
+  "TAPI-02422": "Possible double-up: TAPI-02528 (lawn clean-up) was posted for this address the same day. Same job?",
+  "TAPI-02820": "Possible double-up: TAPI-03115 is another lawn job at this address (posted 6 Oct). Same job?",
+  "TAPI-03115": "Possible double-up: TAPI-02820 (lawns and cleaning, Aug) is still open for this address. Same job?",
+  "TAPI-02782": "Possible double-up: lawns at this address were invoiced 12 Oct (INV-0180, TAPI-03072). Was this a separate visit in August? If not, don't invoice it.",
+  "TAPI-02140": "Possible double-up: TAPI-02130 (carpet steam clean quote) is also open for this address.",
+  "TAPI-03028": "Possible double-up: a new lawns and cleaning job (TAPI-03155) was posted for this address on 11 Oct."
  }
 };
